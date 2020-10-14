@@ -1,9 +1,59 @@
-/* add css module styles here (optional) */
+/* SHAPES LIBRARY */
 
-.test {
-  margin: 2em;
-  padding: 0.5em;
-  border: 2px solid #000;
-  font-size: 2em;
-  text-align: center;
+.shapes__container {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  padding: 5px;
 }
+
+.shape {
+  max-width: 100%;
+}
+.square {
+  width: 25%;
+}
+.rectangle {
+  width: 50%;
+}
+
+.shape__inner {
+  position: relative;
+  box-sizing: border-box;
+}
+.square__inner {
+  padding-bottom: 100%;
+}
+.rectangle__inner {
+  padding-bottom: 50%;
+}
+
+.shape__content {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  background-attachment: local;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  position: absolute;
+
+  margin: 5px;
+
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+
+  overflow: hidden;
+}
+
+/* _ DEV _ */
+.shapes__container > * {
+  outline: 1px dashed #ddd;
+  box-sizing: border-box;
+}
+/* ^ DEV ^ */
