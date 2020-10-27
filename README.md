@@ -11,7 +11,7 @@ npm i react-symmetrical-shapes-container
 ## Usage
 
 ```javascript
-import { ShapesContainer } from 'npm i react-symmetrical-shapes-container'
+import { ShapesContainer } from 'react-symmetrical-shapes-container'
 
 const App = () => <ShapesContainer shapes={shapesArray} />
 ```
