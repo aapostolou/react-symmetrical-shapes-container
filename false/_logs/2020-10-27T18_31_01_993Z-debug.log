@@ -1,0 +1,59 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'publish',
+1 verbose cli   '-no-cache'
+1 verbose cli ]
+2 info using npm@6.14.4
+3 info using node@v12.18.0
+4 verbose npm-session 9ed92347246c4c15
+5 verbose publish [ '.' ]
+6 info lifecycle react-symmetrical-shapes-container@1.0.0~prepublish: react-symmetrical-shapes-container@1.0.0
+7 info lifecycle react-symmetrical-shapes-container@1.0.0~prepare: react-symmetrical-shapes-container@1.0.0
+8 verbose lifecycle react-symmetrical-shapes-container@1.0.0~prepare: unsafe-perm in lifecycle true
+9 verbose lifecycle react-symmetrical-shapes-container@1.0.0~prepare: PATH: C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\Alexandros Apostolou\Desktop\react-symmetrical-shapes-container\node_modules\.bin;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Users\Alexandros Apostolou\AppData\Local\Microsoft\WindowsApps;C:\Users\Alexandros Apostolou\AppData\Roaming\npm;C:\Users\Alexandros Apostolou\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Alexandros Apostolou\AppData\Roaming\Composer\vendor\bin
+10 verbose lifecycle react-symmetrical-shapes-container@1.0.0~prepare: CWD: .
+11 silly lifecycle react-symmetrical-shapes-container@1.0.0~prepare: Args: [ '/d /s /c', 'run-s build' ]
+12 silly lifecycle react-symmetrical-shapes-container@1.0.0~prepare: Returned: code: 0  signal: null
+13 info lifecycle react-symmetrical-shapes-container@1.0.0~prepublishOnly: react-symmetrical-shapes-container@1.0.0
+14 info lifecycle react-symmetrical-shapes-container@1.0.0~prepack: react-symmetrical-shapes-container@1.0.0
+15 info lifecycle react-symmetrical-shapes-container@1.0.0~postpack: react-symmetrical-shapes-container@1.0.0
+16 notice
+17 notice package: react-symmetrical-shapes-container@1.0.0
+18 notice === Tarball Contents ===
+19 notice 751B  dist/index.css
+19 notice 3.1kB dist/index.js
+19 notice 3.0kB dist/index.modern.js
+19 notice 1.7kB package.json
+19 notice 5.3kB dist/index.js.map
+19 notice 5.3kB dist/index.modern.js.map
+19 notice 3.0kB README.md
+20 notice === Tarball Details ===
+21 notice name:          react-symmetrical-shapes-container
+21 notice version:       1.0.0
+21 notice package size:  5.0 kB
+21 notice unpacked size: 22.1 kB
+21 notice shasum:        2b61a53e75c775427d0f761c6c9be1ef6311abb7
+21 notice integrity:     sha512-9hcuYjY6g+gD5[...]xycjGSRwnn24A==
+21 notice total files:   7
+22 notice
+23 http fetch PUT 404 https://registry.npmjs.org/react-symmetrical-shapes-container 873ms
+24 verbose stack Error: 404 Not Found - PUT https://registry.npmjs.org/react-symmetrical-shapes-container - Not found
+24 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-fetch\check-response.js:104:15
+24 verbose stack     at processTicksAndRejections (internal/process/task_queues.js:97:5)
+25 verbose statusCode 404
+26 verbose pkgid react-symmetrical-shapes-container@1.0.0
+27 verbose cwd C:\Users\Alexandros Apostolou\Desktop\react-symmetrical-shapes-container
+28 verbose Windows_NT 10.0.19041
+29 verbose argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "publish" "-no-cache"
+30 verbose node v12.18.0
+31 verbose npm  v6.14.4
+32 error code E404
+33 error 404 Not Found - PUT https://registry.npmjs.org/react-symmetrical-shapes-container - Not found
+34 error 404
+35 error 404 'react-symmetrical-shapes-container@1.0.0' is not in the npm registry.
+36 error 404 You should bug the author to publish it (or use the name yourself!)
+37 error 404 Note that you can also install from a
+38 error 404 tarball, folder, http url, or git url.
+39 verbose exit [ 1, true ]

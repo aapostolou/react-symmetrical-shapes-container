@@ -51,9 +51,18 @@
   overflow: hidden;
 }
 
-/* _ DEV _ */
-.shapes__container > * {
+/* _ Class Presets _ */
+/* Container */
+.shapes__container__outline > * {
   outline: 1px dashed #ddd;
   box-sizing: border-box;
 }
-/* ^ DEV ^ */
+.shape__container__round > .shape > .shape__inner > .shape__content {
+  border-radius: 100vmax;
+}
+
+/* Shape */
+.shape__content__round > .shape__inner > .shape__content {
+  border-radius: 100vmax;
+}
+/* ^ Class Presets ^ */
