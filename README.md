@@ -19,9 +19,9 @@ const App = () => <ShapesContainer shapes={shapesArray} />
 ### ! shapesArray examples
 
 ```javascript
-const shapesArray = [{}, {}, {}] // Will Create 3 squares with random background
+const shapesArray = [{}, {}, {}] // Will Create 3 squares
 
-const shapesArray = [{}, { type: 'rectangle' }, {}] // will create a square-rectangle-square pattern with random background
+const shapesArray = [{}, { type: 'rectangle' }, {}] // will create a square-rectangle-square pattern
 ```
 
 ## Props\*
@@ -67,6 +67,15 @@ const shapesArray = [{ type: 'square' }, { type: 'rectangle' }]
 
 _! background colors and images are not part of preset !_
 
+#### Preset = {'random}
+
+```javascript
+<ShapesContainer preset={'random'} />
+```
+
+Every shape will get a random 'type' value.
+_! It works with every weight !_
+
 #### \*Class Preset ()
 
 ##### Shapes Container
@@ -94,11 +103,11 @@ _! multiple presets can be used at once !_
 
 ## TODO
 
-• Add a lot more props.  
-• Add more presets  
+• Add a lot more props.
+• Add more presets
 • Better Documentation.
 
-• Add 2x2 Square  
+• Add 2x2 Square
 • Add 1x2 Rectangle (Vertical)
 
 ## Contributing
