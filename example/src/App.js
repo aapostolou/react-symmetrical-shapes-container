@@ -1,18 +1,32 @@
 import React from 'react'
 
 import { ShapesContainer } from 'react-symmetrical-shapes-container'
-import 'react-symmetrical-shapes-container/dist/index.css'
 
 const shapesArray = [
-  { className: 'round-shape' },
-  { type: 'rectangle' },
-  {},
-  { type: 'rectangle' },
+  { component: 'HI' },
   {},
   {},
   {},
   {},
-  { type: 'rectangle' },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
   {}
 ].map((el) => ({ ...el, ...{ background: 'random' } }))
 
@@ -29,8 +43,8 @@ const App = () => (
     <div style={{ width: '100%', maxWidth: '1000px' }}>
       <ShapesContainer
         className='outline-shapes'
-        weight={3}
-        preset={3}
+        weight={5}
+        preset={'random'}
         shapes={shapesArray}
       />
     </div>
