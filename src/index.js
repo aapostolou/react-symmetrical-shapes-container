@@ -1,54 +1,81 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import styles from './styles.module.css'
+import styles from './styles.js'
 
 const Shape = (props = {}) => {
-  const { className = '', type = 'square', background, component } = props
+  const {
+    className = '',
+    style,
+    type = 'square',
+    weight,
+    minWidth,
+    background,
+    component
+  } = props
 
   const generateShapeProps = () => ({
-    ...{
-      ...props,
-      ...{
-        className: `shape ${type} ${styles.shape} ${
-          styles[type] || styles.square
-        } ${className} ${classPreset()}`
-      }
-    }
+    className: `shape ${type}`,
+    style: getShapeStyle()
   })
 
-  const classPreset = () => {
-    let result = ''
+  const getShapeStyle = () => {
+    let size = type === 'rectangle' ? 2 : 1
 
-    if (className.includes('round-shape'))
-      result += styles.shape__content__round + ' '
+    let result = {
+      width: `${(100 / weight) * size}%`,
+      minWidth: minWidth ? minWidth * size : 0
+    }
+
+    return { ...styles.shape, ...styles[type], ...result, ...style }
+  }
+
+  /* ============= */
+
+  const classPresetInner = () => {
+    let result = {}
+
+    if (className.includes('outline-shape'))
+      result = { ...result, ...{ outline: '1px dashed #ddd' } }
 
     return result
   }
 
+  const shapeInnerStyle = () => ({
+    ...styles.shape__inner,
+    ...styles[`${type}__inner`],
+    ...classPresetInner()
+  })
+
+  const classPresetContent = () => {
+    let result = {}
+
+    if (className.includes('round-shape'))
+      result = { ...result, ...{ borderRadius: '100vmax' } }
+
+    return result
+  }
+
+  const shapeContentStyle = () => ({
+    ...{
+      backgroundImage: `url(${
+        background === 'random'
+          ? 'https://picsum.photos/1920/' +
+            (1080 + Math.floor(Math.random() * 1000))
+          : background
+      }`
+    },
+    ...styles.shape__content,
+    ...styles[`${type}__content`],
+    ...classPresetContent()
+  })
+
   return (
     <div {...generateShapeProps()}>
-      <div
-        className={`shape__inner ${type}__inner ${styles.shape__inner} ${
-          type === 'rectangle' ? styles.rectangle__inner : styles.square__inner
-        }`}
-      >
-        <div
-          className={`shape__content ${styles.shape__content} ${type}__content`}
-          style={{
-            backgroundImage: `url(${
-              background === 'random'
-                ? 'https://picsum.photos/1920/' +
-                  (1080 + Math.floor(Math.random() * 1000))
-                : background
-            }`
-          }}
-        >
+      <div className={`shape__inner ${type}__inner`} style={shapeInnerStyle()}>
+        <div className={`shape__content`} style={shapeContentStyle()}>
           <div
-            className={`shape__logo ${styles.shape__logo} ${type}__logo ${
-              props.type === 'rectangle'
-                ? styles.rectangle__logo
-                : styles.square__logo
-            }`}
+            className={`shape__logo ${type}__logo`}
+            style={{ ...styles.shape__logo, ...styles[`${type}__logo`] }}
           >
             {component}
           </div>
@@ -61,65 +88,79 @@ const Shape = (props = {}) => {
 export const ShapesContainer = (props = {}) => {
   const { className = '', weight = 4, preset, minWidth, shapes = [] } = props
 
+  const [shapesArray, setShapesArray] = useState([])
+
+  useEffect(() => {
+    setShapesArray(shapes.map((shape) => generateShape(shape)))
+  }, [])
+
+  const generateShape = (shape) => {
+    shape.type = getShapeType(shape)
+    shape.className = getShapeClass(shape)
+    shape.weight = weight
+    shape.minWidth = minWidth
+
+    return shape
+  }
+
   const generateContainerProps = () => ({
     ...{
       ...props,
       ...{
-        className: `shapes-container ${
-          styles.shapes__container
-        } ${className} ${classPreset()}`
-      }
+        className: `shapes-container ${className || ''}`
+      },
+      ...{ style: { ...styles.shapes__container, ...{} } },
+      shapes: null
     }
   })
 
+  /* Shape TYpe */
+  const getShapeType = (shape) => {
+    if (preset === 3) {
+      return preset3(shapes.indexOf(shape))
+    } else if (preset === 'random') {
+      return presetRandom(shapes.indexOf(shape))
+    }
+
+    return shape
+  }
+
+  /* Shape Presets */
   const preset3 = (index) =>
     (index + -1) % 10 === 0 || (index % 5 === 0 && index % 10 !== 0)
       ? 'rectangle'
       : 'square'
 
-  const classPreset = () => {
-    let result = ''
+  const presetRandom = (index) => {
+    let lineWeight =
+      shapes.slice(0, index).reduce((total, current) => {
+        return (total += current.type === 'rectangle' ? 2 : 1)
+      }, 0) % weight
 
-    if (className.includes('outline-shapes'))
-      result += styles.shapes__container__outline + ' '
-    if (className.includes('round-shapes'))
-      result += styles.shape__container__round + ' '
+    let type =
+      lineWeight + 1 < weight
+        ? Math.round(Math.random())
+          ? 'rectangle'
+          : 'square'
+        : 'square'
+
+    return type
+  }
+
+  /* Shape Class & Preset */
+  const getShapeClass = (shape) => {
+    let result = `shapes-container ${shape.className || ''}`
+
+    if (className.includes('outline-shapes')) result += ' outline-shape'
+    if (className.includes('round-shapes')) result += ' round-shape'
 
     return result
   }
 
-  const generateShapeProps = (shape, index) => ({
-    ...props,
-    ...{
-      style: generateShapeStyle(getShapeType(shape)),
-      type: getShapeType(shape, index),
-      background: shape.background,
-      component: shape.component
-    }
-  })
-
-  const generateShapeStyle = (type) => {
-    let size = type === 'rectangle' ? 2 : 1
-
-    let style = {
-      width: `${(100 / weight) * size}%`,
-      minWidth: minWidth ? minWidth * size : 0
-    }
-
-    return style
-  }
-  const getShapeType = (shape) => {
-    if (preset === 3) {
-      return preset3(shapes.indexOf(shape))
-    } else {
-      return shape.type || 'square'
-    }
-  }
-
   return (
     <div {...generateContainerProps()}>
-      {shapes.map((shape, index) => (
-        <Shape key={`shape${index}`} {...generateShapeProps(shape, index)} />
+      {shapesArray.map((shape, index) => (
+        <Shape key={`shape${index}`} {...shape} />
       ))}
     </div>
   )
