@@ -99,7 +99,7 @@ const shapesArray = [{ className: 'class-preset' }]
 | :---------- | ----------------------------------------------------- |
 | round-shape | Make shape's corners round (_border-radius: 100vmax_) |
 
-_! multiple presets can be used at once !_
+(_multiple presets can be used at once_)
 
 ## TODO
 
