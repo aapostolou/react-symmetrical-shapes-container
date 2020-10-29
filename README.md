@@ -67,7 +67,7 @@ const shapesArray = [{ type: 'square' }, { type: 'rectangle' }]
 
 _! background colors and images are not part of preset !_
 
-#### Preset = {'random}
+#### Preset = {'random'}
 
 ```javascript
 <ShapesContainer preset={'random'} />
