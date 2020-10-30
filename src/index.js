@@ -109,7 +109,7 @@ export const ShapesContainer = (props = {}) => {
       ...{
         className: `shapes-container ${className || ''}`
       },
-      ...{ style: { ...styles.shapes__container, ...{} } },
+      ...{ style: { ...styles.shapes__container, ...{ width: '100%' } } },
       shapes: null
     }
   })
@@ -122,7 +122,7 @@ export const ShapesContainer = (props = {}) => {
       return presetRandom(shapes.indexOf(shape))
     }
 
-    return shape
+    return shape.type
   }
 
   /* Shape Presets */
