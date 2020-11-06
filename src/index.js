@@ -2,12 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import styles from './styles.js'
 
-const shapeTypes = {
-  square: { size: 1 },
-  rectangle: { size: 2 },
-  bigSquare: { size: 2 }
-}
-
 const Shape = (props = {}) => {
   const {
     className = '',
@@ -25,7 +19,7 @@ const Shape = (props = {}) => {
   })
 
   const getShapeStyle = () => {
-    let size = shapeTypes[type].size
+    let size = type === 'rectangle' ? 2 : 1
 
     let result = {
       width: `${(100 / weight) * size}%`,
@@ -97,59 +91,16 @@ export const ShapesContainer = (props = {}) => {
   const [shapesArray, setShapesArray] = useState([])
 
   useEffect(() => {
-    setShapesArray(generateSpaces(shapes.map((shape) => generateShape(shape))))
+    setShapesArray(shapes.map((shape) => generateShape(shape)))
   }, [])
 
   const generateShape = (shape) => {
-    var newShape = JSON.parse(JSON.stringify(shape))
-
-    newShape.type = getShapeType(shape)
-    newShape.className = getShapeClass(shape)
-    newShape.weight = weight
-    newShape.minWidth = minWidth
-
-    return newShape
-  }
-
-  const generateSpaces = (array) => {
-    array.forEach((el) => generateSpacers)
-
-    return array
-  }
-
-  const generateSpacers = (shape, index) => {
-    if (shape.type === 'bigSquare') {
-      addSpacer(2, weight - 2, index)
-    } else if (shape.type === 'verticalRectangle') {
-      addSpacer(1, weight - 1, index)
-    }
+    shape.type = getShapeType(shape)
+    shape.className = getShapeClass(shape)
+    shape.weight = weight
+    shape.minWidth = minWidth
 
     return shape
-  }
-  const addSpacer = (spaceSize, after, currentPosition) => {
-    if (
-      spaceSize === undefined ||
-      after === undefined ||
-      currentPosition === undefined
-    )
-      return
-
-    let spaceShapes = shapes.splice(currentPosition + 1, after)
-    let currentSize = 0
-    let maxSize = spaceShapes.length
-
-    console.log(spaceShapes)
-
-    // for (let i = 0; i < maxSize; i++) {
-    //   let size = shapeTypes[spaceShapes[i].type].size
-
-    //   if (currentSize + size === maxSize) {
-    //     spaceShapes[i].style = {
-    //       ...spaceShapes[i].style,
-    //       ...{ marginRight: `${spaceSize}%` }
-    //     }
-    //   }
-    // }
   }
 
   const generateContainerProps = () => ({
@@ -165,15 +116,13 @@ export const ShapesContainer = (props = {}) => {
 
   /* Shape TYpe */
   const getShapeType = (shape) => {
-    let type = shape.type
-
     if (preset === 3) {
-      type = preset3(shapes.indexOf(shape))
+      return preset3(shapes.indexOf(shape))
     } else if (preset === 'random') {
-      type = presetRandom(shapes.indexOf(shape))
+      return presetRandom(shapes.indexOf(shape))
     }
 
-    return type || 'square'
+    return shape.type
   }
 
   /* Shape Presets */
@@ -185,7 +134,7 @@ export const ShapesContainer = (props = {}) => {
   const presetRandom = (index) => {
     let lineWeight =
       shapes.slice(0, index).reduce((total, current) => {
-        return (total += shapeTypes[current.type].size)
+        return (total += current.type === 'rectangle' ? 2 : 1)
       }, 0) % weight
 
     let type =
