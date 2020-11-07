@@ -3,7 +3,8 @@ export default {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    padding: '5px'
+    padding: '5px',
+    boxSizing: 'border-box'
   },
   shape: {
     maxWidth: '100%'

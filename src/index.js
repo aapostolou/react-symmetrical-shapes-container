@@ -86,13 +86,20 @@ const Shape = (props = {}) => {
 }
 
 export const ShapesContainer = (props = {}) => {
-  const { className = '', weight = 4, preset, minWidth, shapes = [] } = props
+  const {
+    className = '',
+    style,
+    weight = 4,
+    preset,
+    minWidth,
+    shapes = []
+  } = props
 
   const [shapesArray, setShapesArray] = useState([])
 
   useEffect(() => {
     setShapesArray(shapes.map((shape) => generateShape(shape)))
-  }, [])
+  }, [shapes])
 
   const generateShape = (shape) => {
     shape.type = getShapeType(shape)
@@ -109,7 +116,10 @@ export const ShapesContainer = (props = {}) => {
       ...{
         className: `shapes-container ${className || ''}`
       },
-      ...{ style: { ...styles.shapes__container, ...{ width: '100%' } } },
+      ...{
+        style: { ...styles.shapes__container, ...{ width: '100%' } },
+        ...style
+      },
       shapes: null
     }
   })
@@ -160,7 +170,10 @@ export const ShapesContainer = (props = {}) => {
   return (
     <div {...generateContainerProps()}>
       {shapesArray.map((shape, index) => (
-        <Shape key={`shape${index}`} {...shape} />
+        <Shape
+          key={`shape${index}${Math.floor(Math.random() * 9999999)}`}
+          {...shape}
+        />
       ))}
     </div>
   )
