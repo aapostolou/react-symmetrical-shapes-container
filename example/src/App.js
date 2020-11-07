@@ -54,14 +54,13 @@ const App = () => {
       }}
     >
       <h1>react-symmetrical-shapes-container</h1>
-      <div style={{ width: '100%', maxWidth: '1000px' }}>
-        <ShapesContainer
-          className='outline-shapes'
-          weight={5}
-          preset={'random'}
-          shapes={shapesArray}
-        />
-      </div>
+      <ShapesContainer
+        className='outline-shapes'
+        weight={5}
+        preset={'random'}
+        shapes={shapesArray}
+        style={{ width: '100%', maxWidth: '1000px' }}
+      />
     </div>
   )
 }

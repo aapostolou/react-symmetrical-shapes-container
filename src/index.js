@@ -117,8 +117,7 @@ export const ShapesContainer = (props = {}) => {
         className: `shapes-container ${className || ''}`
       },
       ...{
-        style: { ...styles.shapes__container, ...{ width: '100%' } },
-        ...style
+        style: { ...styles.shapes__container, ...{ width: '100%' }, ...style }
       },
       shapes: null
     }
