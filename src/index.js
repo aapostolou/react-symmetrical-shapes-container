@@ -1,179 +1,183 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import styles from './styles.js'
+import Shape from './Shape'
 
-const Shape = (props = {}) => {
-  const {
-    className = '',
-    style,
-    type = 'square',
-    weight,
-    minWidth,
-    background,
-    component
-  } = props
+import style from './style'
 
-  const generateShapeProps = () => ({
-    className: `shape ${type}`,
-    style: getShapeStyle()
-  })
+const ShapesContainer = ({
+  shapes = [],
+  weight = 4,
+  preset,
+  spacing = 0,
+  className,
+  forceWeight = true,
+  debug = false
+}) => {
+  /* Presets */
+  const presets = {
+    1: () => ({ width: 1, height: 1 }),
+    2: (index) => ({
+      width: (index + 1) % 3 == 0 ? 2 : 1,
+      height: 1
+    }),
+    3: (index) => ({
+      width: [1, 5].indexOf(index % 10) != -1 ? 2 : 1,
+      height: 1
+    }),
+    4: (index) => ({
+      width: [2, 12].indexOf(index % 20) != -1 ? 2 : 1,
+      height: [2, 3, 11, 12].indexOf(index % 20) != -1 ? 2 : 1
+    })
+  }
+  const calculatePresetShapeSize = (shape) => {
+    return presets[preset](shapes.indexOf(shape))
+  }
+  /* Calc Size */
+  const shapeTypes = {
+    /* Square */
+    square: { width: 1, height: 1 },
+    'big-square': { width: 2, height: 2 },
 
-  const getShapeStyle = () => {
-    let size = type === 'rectangle' ? 2 : 1
+    /* Rectangle */
+    rectangle: { width: 2, height: 1 },
+    'big-rectangle': { width: 3, height: 2 },
 
-    let result = {
-      width: `${(100 / weight) * size}%`,
-      minWidth: minWidth ? minWidth * size : 0
+    /* Rectangle Vertical */
+    'rectangle-ver': { width: 1, height: 2 },
+    'big-rectangle-ver': { width: 2, height: 3 }
+  }
+
+  const calulateShapeSize = (shape) => {
+    /* Preset */
+    if (preset && presets[preset]) {
+      return calculatePresetShapeSize(shape)
     }
 
-    return { ...styles.shape, ...styles[type], ...result, ...style }
+    /* Type */
+    if (shape.type && shapeTypes[shape.type]) {
+      return shapeTypes[shape.type]
+    }
+
+    /* Size */
+    if (shape.size) {
+      return {
+        width: shape.size.width < 1 ? 1 : shape.size.width,
+        height: shape.size.height < 1 ? 1 : shape.size.height
+      }
+    }
+
+    return { width: 1, height: 1 }
+  }
+  /* Grid */
+  const generateGrid = () => {
+    let grid = []
+    let pos = 0
+
+    shapes.forEach((shape, i) => {
+      shape.size = calulateShapeSize(shape)
+      let { width, height } = shape.size
+
+      while (grid[pos] == 'spacer') {
+        pos++
+      }
+
+      /* Force Weight */
+      if (width > weight) {
+        if (forceWeight) {
+          let aspectRation = width / height
+
+          shape.size.width = weight
+          shape.size.height = Math.round(weight / aspectRation)
+            ? Math.round(weight / aspectRation)
+            : 1
+
+          ;({ width, height } = shape.size)
+        } else {
+          throw 'Shape is too big'
+        }
+      }
+
+      /* Check Collition & Overflow */
+      if (width > 1) {
+        whileLoop: while (true) {
+          for (let i = 0; i <= width - 1; i++) {
+            /* Collision */
+            if (grid[pos + i] == 'spacer') {
+              pos += 1
+
+              continue whileLoop
+            }
+            /* Overflow */
+            if (i > 0 && (pos + i) % weight == 0) {
+              pos += i
+
+              continue whileLoop
+            }
+          }
+
+          break
+        }
+      }
+
+      /* Debug Indexing */
+      if (!shape.component) shape.component = debug ? `${i}` : ``
+
+      /* Add shape to grid */
+      grid[pos] = shape
+
+      /* Width Spaces */
+      for (let i = 1; i <= width - 1; i++) {
+        grid[pos + i] = 'spacer'
+      }
+      /* Height Spaces */
+      for (let j = 1; j <= height - 1; j++) {
+        for (let i = 0; i <= width - 1; i++) {
+          grid[pos + weight * j + i] = 'spacer'
+        }
+      }
+
+      pos++
+    })
+
+    /* Fill Empty */
+    for (let i = 0; i < grid.length; i++) {
+      if (!grid[i]) grid[i] = 'spacer'
+    }
+
+    return grid.map((shape, i) => {
+      let props = {
+        key: `shape-${i}`,
+        spacing,
+        debug,
+        ...shape,
+        weight
+      }
+
+      return <Shape {...props} />
+    })
   }
 
-  /* ============= */
+  /* ClassName */
+  const generateClassName = () => {
+    let result = 'symmetrical-shapes-container'
 
-  const classPresetInner = () => {
-    let result = {}
-
-    if (className.includes('outline-shape'))
-      result = { ...result, ...{ outline: '1px dashed #ddd' } }
+    if (className) result += ` ${className}`
+    if (debug) result += ` debug`
 
     return result
   }
-
-  const shapeInnerStyle = () => ({
-    ...styles.shape__inner,
-    ...styles[`${type}__inner`],
-    ...classPresetInner()
-  })
-
-  const classPresetContent = () => {
-    let result = {}
-
-    if (className.includes('round-shape'))
-      result = { ...result, ...{ borderRadius: '100vmax' } }
+  /* Style */
+  const generateStyle = () => {
+    let result = style['symmetrical-shapes-container']
 
     return result
   }
-
-  const shapeContentStyle = () => ({
-    ...{
-      backgroundImage: `url(${
-        background === 'random'
-          ? 'https://picsum.photos/1920/' +
-            (1080 + Math.floor(Math.random() * 1000))
-          : background
-      }`
-    },
-    ...styles.shape__content,
-    ...styles[`${type}__content`],
-    ...classPresetContent()
-  })
 
   return (
-    <div {...generateShapeProps()}>
-      <div className={`shape__inner ${type}__inner`} style={shapeInnerStyle()}>
-        <div className={`shape__content`} style={shapeContentStyle()}>
-          <div
-            className={`shape__logo ${type}__logo`}
-            style={{ ...styles.shape__logo, ...styles[`${type}__logo`] }}
-          >
-            {component}
-          </div>
-        </div>
-      </div>
+    <div className={generateClassName()} style={generateStyle()}>
+      {generateGrid()}
     </div>
   )
 }
 
-export const ShapesContainer = (props = {}) => {
-  const {
-    className = '',
-    style,
-    weight = 4,
-    preset,
-    minWidth,
-    shapes = []
-  } = props
-
-  const [shapesArray, setShapesArray] = useState([])
-
-  useEffect(() => {
-    setShapesArray(shapes.map((shape) => generateShape(shape)))
-  }, [shapes])
-
-  const generateShape = (shape) => {
-    shape.type = getShapeType(shape)
-    shape.className = getShapeClass(shape)
-    shape.weight = weight
-    shape.minWidth = minWidth
-
-    return shape
-  }
-
-  const generateContainerProps = () => ({
-    ...{
-      ...props,
-      ...{
-        className: `shapes-container ${className || ''}`
-      },
-      ...{
-        style: { ...styles.shapes__container, ...{ width: '100%' }, ...style }
-      },
-      shapes: null
-    }
-  })
-
-  /* Shape TYpe */
-  const getShapeType = (shape) => {
-    if (preset === 3) {
-      return preset3(shapes.indexOf(shape))
-    } else if (preset === 'random') {
-      return presetRandom(shapes.indexOf(shape))
-    }
-
-    return shape.type
-  }
-
-  /* Shape Presets */
-  const preset3 = (index) =>
-    (index + -1) % 10 === 0 || (index % 5 === 0 && index % 10 !== 0)
-      ? 'rectangle'
-      : 'square'
-
-  const presetRandom = (index) => {
-    let lineWeight =
-      shapes.slice(0, index).reduce((total, current) => {
-        return (total += current.type === 'rectangle' ? 2 : 1)
-      }, 0) % weight
-
-    let type =
-      lineWeight + 1 < weight
-        ? Math.round(Math.random())
-          ? 'rectangle'
-          : 'square'
-        : 'square'
-
-    return type
-  }
-
-  /* Shape Class & Preset */
-  const getShapeClass = (shape) => {
-    let result = `shapes-container ${shape.className || ''}`
-
-    if (className.includes('outline-shapes')) result += ' outline-shape'
-    if (className.includes('round-shapes')) result += ' round-shape'
-
-    return result
-  }
-
-  return (
-    <div {...generateContainerProps()}>
-      {shapesArray.map((shape, index) => (
-        <Shape
-          key={`shape${index}${Math.floor(Math.random() * 9999999)}`}
-          {...shape}
-        />
-      ))}
-    </div>
-  )
-}
+export { ShapesContainer }

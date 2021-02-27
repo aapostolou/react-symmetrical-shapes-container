@@ -1,68 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { ShapesContainer } from 'react-symmetrical-shapes-container'
 
-const shapesArray = [
-  { component: 'HI' },
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {}
-].map((el) => ({ ...el, ...{ background: 'random' } }))
+const shapes = [...new Array(20)].map((el) => ({}))
 
-const App = () => {
-  const [shapesArray, setShapesArray] = useState([])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShapesArray(
-        [{}, {}, {}, {}, {}, {}, {}, {}].map((el) => ({
-          ...el,
-          ...{ background: 'random' }
-        }))
-      )
-    }, 3000)
-  }, [])
-
+export default function App() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
-      <h1>react-symmetrical-shapes-container</h1>
-      <ShapesContainer
-        className='outline-shapes'
-        weight={5}
-        preset={'random'}
-        shapes={shapesArray}
-        style={{ width: '100%', maxWidth: '1000px' }}
-      />
+    <div className='App'>
+      <ShapesContainer shapes={shapes} weight={4} preset={4} debug={true} />
     </div>
   )
 }
-
-export default App
